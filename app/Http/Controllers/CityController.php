@@ -102,7 +102,7 @@ class CityController extends Controller
             'name'=>'required|string|min:3|max:30'
         ]);
 
-        $city = new City();
+        // $city = new City();
         $city->name = $request->get('name');
         $isUpdated = $city->save();
 
