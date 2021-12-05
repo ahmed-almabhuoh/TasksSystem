@@ -15,16 +15,27 @@ class AgeCheck
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, $age)
+    public function handle(Request $request, Closure $next, $age = 17)
     {
+
+        // BEFORE MIDDLEWARE
         // $age = 17;
-        if ($age < 18) {
-            // dd("NOT ALLOW TO BE HERE");
-            abort(Response::HTTP_UNAUTHORIZED);
+        // if ($age < 18) {
+        //     // dd("NOT ALLOW TO BE HERE");
+        //     abort(Response::HTTP_UNAUTHORIZED);
+        // }else {
+        //     // abort(Response::HTTP_OK);
+        //     dd("VERY WELCOME TO YOU");
+        // }
+
+        // AFTER MIDDLEWAER
+        $response = $next($request);
+        if ($age > 18) {
+            echo '<br>YOU GOT 3 POINTS';
         }else {
-            // abort(Response::HTTP_OK);
-            dd("VERY WELCOME TO YOU");
+            echo '<br>YOU ARE LESS THAN 18y';
         }
-        return $next($request);
+
+        return $response;
     }
 }

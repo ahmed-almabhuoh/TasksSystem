@@ -266,6 +266,30 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </li>
               </ul>
             </li>
+            <li class="nav-header">Humman Resourse</li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-user-shield"></i>
+                <p>
+                  Admin
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{route('admins.create')}}" class="nav-link">
+                    <i class="far fa-plus-square nav-icon"></i>
+                    <p>Create</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{route('admins.index')}}" class="nav-link">
+                    <i class="fas fa-list-ul nav-icon"></i>
+                    <p>Index</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

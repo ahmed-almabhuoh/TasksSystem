@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CityController;
 use App\Http\Middleware\AgeCheck;
@@ -27,6 +28,7 @@ Route::prefix('cms/admin')->group(function () {
     // Route::view('/index', 'cms.parent');
     Route::resource('/cities', CityController::class);
     Route::resource('/categories', CategoryController::class);
+    Route::resource('/admins', AdminController::class);
 });
 
 // Route::get('get', function () {
@@ -55,6 +57,10 @@ Route::prefix('cms/admin')->group(function () {
 //     })->withoutMiddleware('age');
 // });
 
-Route::get('age-check', function () {
-    
-})->middleware('age:19');
+// Route::get('age-check', function () {
+//     echo 'WE ARE IN THE ROUTE';
+// })->middleware('age:50');
+
+// Route::prefix('cms/admin')->group(function () {
+//     Route::view('login', 'cms.login')->name('login');
+// });
