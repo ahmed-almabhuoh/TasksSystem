@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CityController;
 use App\Http\Middleware\AgeCheck;
@@ -24,6 +25,11 @@ Route::get('/', function () {
 // Route::view('/','cms.index');
 
 Route::prefix('cms/admin')->group(function () {
+    Route::get('login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('login', [AuthController::class, 'login']);
+});
+
+Route::prefix('cms/admin')->middleware('auth:admin')->group(function () {
     Route::view('/', 'cms.parent');
     // Route::view('/index', 'cms.parent');
     Route::resource('/cities', CityController::class);

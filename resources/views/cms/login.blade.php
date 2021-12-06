@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="{{asset('cms/plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{asset('cms/dist/css/adminlte.min.css')}}">
+  <!-- Toastr -->
+  <link rel="stylesheet" href="{{asset('cms/plugins/toastr/toastr.min.css')}}">
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
@@ -24,9 +26,10 @@
     <div class="card-body login-card-body">
       <p class="login-box-msg">Sign in to start your session</p>
 
-      <form action="cms/index3.html" method="post">
+      <form>
+        {{-- @csrf --}}
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email">
+          <input type="email" id="email" class="form-control" placeholder="Email">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -34,7 +37,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password">
+          <input type="password" id="password" class="form-control" placeholder="Password">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -52,7 +55,7 @@
           </div>
           <!-- /.col -->
           <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            <button type="button" onclick="login()" class="btn btn-primary btn-block">Sign In</button>
           </div>
           <!-- /.col -->
         </div>
@@ -87,5 +90,35 @@
 <script src="{{asset('cms/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{asset('cms/dist/js/adminlte.min.js')}}"></script>
+{{-- AXIOS LIBRARY --}}
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<!-- Toastr -->
+<script src="{{asset('cms/plugins/toastr/toastr.min.js')}}"></script>
+<script>
+    function login () {
+      // cms/admin/categories
+      axios.post('/cms/admin/login', {
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value,
+        remember: document.getElementById('remember').checked,
+      })
+        .then(function (response) {
+          // handle success
+          console.log(response);
+          toastr.success(response.data.message);
+          // document.getElementById('set-form').reset();
+          // document.getElementById('reset-form').reset();
+          window.location.href = '/cms/admin/';
+        })
+        .catch(function (error) {
+          // handle error
+          console.log(error);
+          toastr.error(error.response.data.message)
+        })
+        .then(function () {
+          // always executed
+        });
+    }
+</script>
 </body>
 </html>
