@@ -16,8 +16,8 @@ class AdminFactory extends Factory
     {
         return [
             //
-            'name' => $this->faker->name(),
-            'email' => $this->faker->email(),
+            'name' => 'Ahmad Almabhoh',
+            'email' => 'a@tasks.com',
             'password' => Hash::make('password'),
             // 'email_verified_at' => null,
         ];

@@ -24,7 +24,7 @@ Route::get('/', function () {
 
 // Route::view('/','cms.index');
 
-Route::prefix('cms/admin')->group(function () {
+Route::prefix('cms/admin')->middleware('guest:admin')->group(function () {
     Route::get('login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('login', [AuthController::class, 'login']);
 });
@@ -35,6 +35,8 @@ Route::prefix('cms/admin')->middleware('auth:admin')->group(function () {
     Route::resource('/cities', CityController::class);
     Route::resource('/categories', CategoryController::class);
     Route::resource('/admins', AdminController::class);
+
+    Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 });
 
 // Route::get('get', function () {
