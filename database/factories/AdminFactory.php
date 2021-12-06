@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 
 class AdminFactory extends Factory
 {
@@ -17,7 +18,7 @@ class AdminFactory extends Factory
             //
             'name' => $this->faker->name(),
             'email' => $this->faker->email(),
-            'password' => 'password',
+            'password' => Hash::make('password'),
             // 'email_verified_at' => null,
         ];
     }
