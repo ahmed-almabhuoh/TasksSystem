@@ -24,8 +24,8 @@ Route::get('/', function () {
 
 // Route::view('/','cms.index');
 
-Route::prefix('cms/admin')->middleware('guest:admin')->group(function () {
-    Route::get('login', [AuthController::class, 'showLogin'])->name('login');
+Route::prefix('cms')->middleware('guest:admin')->group(function () {
+    Route::get('{guard}/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('login', [AuthController::class, 'login']);
 });
 
