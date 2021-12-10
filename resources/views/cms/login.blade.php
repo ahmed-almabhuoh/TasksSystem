@@ -55,7 +55,7 @@
           </div>
           <!-- /.col -->
           <div class="col-4">
-            <button type="button" onclick="login()" class="btn btn-primary btn-block">Sign In</button>
+            <button type="button" onclick="login('{{$guard}}')" class="btn btn-primary btn-block">Sign In</button>
           </div>
           <!-- /.col -->
         </div>
@@ -95,12 +95,14 @@
 <!-- Toastr -->
 <script src="{{asset('cms/plugins/toastr/toastr.min.js')}}"></script>
 <script>
-    function login () {
+    function login (guard) {
+      // console.log(guard);
       // cms/admin/categories
-      axios.post('/cms/admin/login', {
+      axios.post('/cms/login', {
         email: document.getElementById('email').value,
         password: document.getElementById('password').value,
         remember: document.getElementById('remember').checked,
+        guard: guard,
       })
         .then(function (response) {
           // handle success

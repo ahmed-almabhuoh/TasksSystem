@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\WelcomeEmail;
 use App\Models\Admin;
 use Dotenv\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpFoundation\Response;
 
 class AdminController extends Controller
@@ -55,6 +57,8 @@ class AdminController extends Controller
             $admin->password = 'password';
             
             $isCreated = $admin->save();
+
+            Mail::to($admin->email)->send(new WelcomeEmail($admin));
 
             return response()->json([
                 'message' => $isCreated ? 'Admin created successfully' : 'Failed to create admin'
