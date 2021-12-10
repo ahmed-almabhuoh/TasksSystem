@@ -21,6 +21,11 @@ class AuthController extends Controller
             'password' => 'required|string|min:3|max:30',
             'remember' => 'required|boolean',
             'guard' => 'required|string|in:admin,user'
+<<<<<<< HEAD
+=======
+        ],[
+            'guard.in' => 'Wrong URL'
+>>>>>>> c36721f8f8f9085e05e7b1338c0a1bed9f99425c
         ]);
 
         if (!$validator->fails()) {
@@ -52,7 +57,10 @@ class AuthController extends Controller
     //         'email' => 'required|email|exists:admins,email',
     //         'password' => 'required|string|min:3|max:30',
     //         'remember' => 'required|boolean',
+<<<<<<< HEAD
     //         'guard' => 'required|string|in:admin,user'
+=======
+>>>>>>> c36721f8f8f9085e05e7b1338c0a1bed9f99425c
     //     ]);
 
     //     if (!$validator->fails()) {
@@ -79,6 +87,7 @@ class AuthController extends Controller
     //     }
     // }
 
+<<<<<<< HEAD
     public function logout (Request $request){
         if(auth('admin')->check()) {
             auth('admin')->logout();
@@ -89,5 +98,29 @@ class AuthController extends Controller
             $request->session()->invalidate();
             return redirect()->route('login', 'user');
         }
+=======
+    // public function logout (Request $request){
+    //     auth($request->get('guard'))->logout();
+    //     $request->session()->invalidate();
+    //     return redirect()->route('logout');
+    // }
+
+    public function logout (Request $request){
+        // if (auth('admin')->check()) {
+        //     auth('admin')->logout();
+        //     $request->session()->invalidate();
+        //     return redirect()->route('logout', 'admin');
+        // }else {
+        //     auth('user')->logout();
+        //     $request->session()->invalidate();
+        //     return redirect()->route('logout', 'user');
+        // }
+
+        $guard = auth('admin')->check() ? 'admin' : 'user';
+
+        auth($guard)->logout();
+        $request->session()->invalidate();
+        return redirect()->route('login', $guard);
+>>>>>>> c36721f8f8f9085e05e7b1338c0a1bed9f99425c
     }
 }
