@@ -128,6 +128,60 @@ class AuthController extends Controller
 
     }
 
+    public function editProfile () {
+
+        // $view = auth('admin')->check() ? 'cms.admin.edit' : 'cms.user.edit';
+        // $guard = auth('admin')->check() ? 'admin' : 'user';
+        // return response()->view($view, [$guard => auth($guard)->check()]);
+
+        // $guard = '';
+
+        // if (auth('admin')->check()) {
+        //     return response()->view('cms.admin.edit', [$guard => auth('admin')->user()]);
+        // }else {
+        //     return response()->view('cms.user.edit', [$guard => auth('user')->user()]);
+        // }
+
+        $guard = '';
+        $user = null;
+        if (auth('admin')->check()) {
+            $guard = 'admin';
+            $view = 'cms.auth.edit-admin';
+        }else {
+            $guard = 'user';
+            $view = 'cms.auth.edit-user';
+        }
+        $user = auth($guard)->user();
+
+
+        return response()->view($view, ['gurad' => $guard, 'user' => $user]);
+    }
+
+    public function updateProfile (Request $request) {
+        $validator = Validator($request->all(), [
+            'name' => 'required|string|min:3|max:30',
+            'email' => 'required|string|min:10|max:45',
+        ]);
+
+        if (!$validator->fails()) {
+
+            $user = auth('admin')->user();
+            $user->email = $request->get('email');
+            $user->name = $request->get('name');
+
+            $isUpdated = $user->save();
+
+            return response()->json([
+                'message' => $isUpdated ? 'Account updated successfully' : 'Failed to update data'
+            ], $isUpdated ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
+
+        }else {
+            return response()->json([
+                'message' => $validator->getMessageBag()->first(),
+            ], Response::HTTP_OK);
+        }
+    }
+
     public function logout (Request $request){
         // if (auth('admin')->check()) {
         //     auth('admin')->logout();
