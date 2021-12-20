@@ -96,20 +96,13 @@
 <script src="{{asset('cms/plugins/toastr/toastr.min.js')}}"></script>
 <script>
     function login (guard) {
-<<<<<<< HEAD
       // console.log(guard);
-=======
->>>>>>> c36721f8f8f9085e05e7b1338c0a1bed9f99425c
       // cms/admin/categories
       axios.post('/cms/login', {
         email: document.getElementById('email').value,
         password: document.getElementById('password').value,
         remember: document.getElementById('remember').checked,
-<<<<<<< HEAD
         guard: guard,
-=======
-        guard: guard
->>>>>>> c36721f8f8f9085e05e7b1338c0a1bed9f99425c
       })
         .then(function (response) {
           // handle success

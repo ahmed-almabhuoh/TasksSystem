@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Dotenv\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
@@ -21,11 +22,8 @@ class AuthController extends Controller
             'password' => 'required|string|min:3|max:30',
             'remember' => 'required|boolean',
             'guard' => 'required|string|in:admin,user'
-<<<<<<< HEAD
-=======
         ],[
             'guard.in' => 'Wrong URL'
->>>>>>> c36721f8f8f9085e05e7b1338c0a1bed9f99425c
         ]);
 
         if (!$validator->fails()) {
@@ -57,10 +55,6 @@ class AuthController extends Controller
     //         'email' => 'required|email|exists:admins,email',
     //         'password' => 'required|string|min:3|max:30',
     //         'remember' => 'required|boolean',
-<<<<<<< HEAD
-    //         'guard' => 'required|string|in:admin,user'
-=======
->>>>>>> c36721f8f8f9085e05e7b1338c0a1bed9f99425c
     //     ]);
 
     //     if (!$validator->fails()) {
@@ -87,23 +81,52 @@ class AuthController extends Controller
     //     }
     // }
 
-<<<<<<< HEAD
-    public function logout (Request $request){
-        if(auth('admin')->check()) {
-            auth('admin')->logout();
-            $request->session()->invalidate();
-            return redirect()->route('login', 'admin');
-        }else {
-            auth('user')->logout();
-            $request->session()->invalidate();
-            return redirect()->route('login', 'user');
-        }
-=======
     // public function logout (Request $request){
     //     auth($request->get('guard'))->logout();
     //     $request->session()->invalidate();
     //     return redirect()->route('logout');
     // }
+
+    public function editPassword () {
+        return response()->view('cms.auth.change-password');
+    }
+
+    public function updatePassword (Request $request) {
+
+        $guard = auth('admin')->check() ? 'admin' : 'user';
+
+        $validator = Validator($request->all(), [
+            // 'current_password' => 'required|string|password:' . $guard,
+            'current_password' => "required|string|password:$guard",
+            'new_password' => 'required|string|confirmed|min:8|max:30',
+        ]);
+
+        if (!$validator->fails()) {
+
+            $user = auth($guard)->user();
+
+            $user->password = Hash::make($request->get('new_password'));
+            $isUpdated = $user->save();
+
+            if ($isUpdated) {
+
+                return response()->json([
+                    'message' => 'Password changed successfully',
+                ], Response::HTTP_OK);
+
+            }else {
+                return response()->json([
+                    'message' => 'Failed to change password'
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
+        }else {
+            return response()->json([
+                'message' => $validator->getMessageBag()->first(),
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+    }
 
     public function logout (Request $request){
         // if (auth('admin')->check()) {
@@ -121,6 +144,5 @@ class AuthController extends Controller
         auth($guard)->logout();
         $request->session()->invalidate();
         return redirect()->route('login', $guard);
->>>>>>> c36721f8f8f9085e05e7b1338c0a1bed9f99425c
     }
 }

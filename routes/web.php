@@ -27,11 +27,7 @@ Route::get('/', function () {
 
 Route::prefix('cms')->middleware('guest:admin')->group(function () {
     Route::get('{guard}/login', [AuthController::class, 'showLogin'])->name('login');
-<<<<<<< HEAD
     Route::post('/login', [AuthController::class, 'login']);
-=======
-    Route::post('login', [AuthController::class, 'login']);
->>>>>>> c36721f8f8f9085e05e7b1338c0a1bed9f99425c
 });
 
 Route::prefix('cms/admin')->middleware('auth:admin')->group(function () {
@@ -40,6 +36,9 @@ Route::prefix('cms/admin')->middleware('auth:admin')->group(function () {
     Route::resource('/cities', CityController::class);
     Route::resource('/categories', CategoryController::class);
     Route::resource('/admins', AdminController::class);
+
+    Route::get('/edit-password', [AuthController::class, 'editPassword'])->name('edit.password');
+    Route::put('/update-password', [AuthController::class, 'updatePassword']);
 
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 });
