@@ -107,5 +107,18 @@ class PermissionController extends Controller
     public function destroy(Permission $permission)
     {
         //
+        if ($permission->delete()) {
+            return response()->json([
+                'icon' => 'success',
+                'title' => 'Success',
+                'text' => 'Permission deleted successfully',
+            ], Response::HTTP_OK);
+        }else {
+            return response()->json([
+                'icon' => 'error',
+                'title' => 'Faild',
+                'text' => 'Faild to delete permission',
+            ], Response::HTTP_BAD_REQUEST);
+        }
     }
 }
