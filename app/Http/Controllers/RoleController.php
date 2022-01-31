@@ -107,5 +107,18 @@ class RoleController extends Controller
     public function destroy(Role $role)
     {
         //
+        if ($role->delete()) {
+            return response()->json([
+                'icon' => 'success',
+                'title' => 'Deleted',
+                'text' => 'Role deleted successfully',
+            ], Response::HTTP_OK);
+        }else {
+            return response()->json([
+                'icon' => 'error',
+                'title' => 'Faild delete',
+                'text' => 'Role faild to delete',
+            ], Response::HTTP_BAD_REQUEST);
+        }
     }
 }

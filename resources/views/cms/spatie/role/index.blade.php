@@ -114,7 +114,7 @@
 
       function destory (id, refrence) {
         // cms/admin/roles/{role}
-        axios.delete('/cms/admin/roles/' + id)
+        axios.delete('/cms/admin/role/' + id)
           .then(function (response) {
             // handle success
             console.log(response);
