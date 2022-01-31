@@ -4,6 +4,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CityController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\RoleController;
 use App\Http\Middleware\AgeCheck;
 use App\Mail\WelcomeEmail;
 use Illuminate\Support\Facades\Route;
@@ -43,6 +45,9 @@ Route::prefix('cms/admin')->middleware('auth:admin')->group(function () {
     Route::get('/edit-profile', [AuthController::class, 'editProfile'])->name('edit.profile');
     Route::put('/edit-profile', [AuthController::class, 'updateProfile']);
 
+    Route::resource('role', RoleController::class);
+    Route::resource('permission', PermissionController::class);
+
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 });
 
@@ -54,7 +59,7 @@ Route::prefix('cms/admin')->middleware('auth:admin')->group(function () {
 // })->middleware(AgeCheck::class);
 
 // Route::get('get', function () {
-    
+
 // })->withoutMiddleware(AgeCheck::class);
 
 // Route::get('age-check', function () {
