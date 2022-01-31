@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Permission;
+use Dotenv\Validator;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class PermissionController extends Controller
 {
@@ -15,6 +17,10 @@ class PermissionController extends Controller
     public function index()
     {
         //
+        $permissions = Permission::all();
+        return response()->view('cms.spatie.permission.index', [
+            'permissions' => $permissions
+        ]);
     }
 
     /**
@@ -25,6 +31,7 @@ class PermissionController extends Controller
     public function create()
     {
         //
+        return response()->view('cms.spatie.permission.create');
     }
 
     /**
@@ -35,7 +42,26 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator($request->all(), [
+            'name' => 'required|string|min:3|max:50',
+            'guard_name' => 'required|string|min:3|max:50|in:admin,user'
+        ]);
         //
+        if (!$validator->fails()) {
+            $permission = new Permission();
+            $permission->name = $request->get('name');
+            $permission->guard_name = $request->get('guard_name');
+
+            $isSaved = $permission->save();
+
+            return response()->json([
+                'message' => $isSaved ? 'Permission created successfully' : 'Faild to create permission',
+            ], $isSaved ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
+        }else {
+            return response()->json([
+                'message' => $validator->getMessageBag()->first(),
+            ], Response::HTTP_BAD_REQUEST);
+        }
     }
 
     /**
