@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\AgeCheck;
 use App\Mail\WelcomeEmail;
 use Illuminate\Support\Facades\Route;
@@ -27,17 +28,18 @@ Route::get('/', function () {
 
 // Route::view('/','cms.index');
 
-Route::prefix('cms')->middleware('guest:admin')->group(function () {
+Route::prefix('cms')->middleware('guest:admin,user')->group(function () {
     Route::get('{guard}/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
 });
 
-Route::prefix('cms/admin')->middleware('auth:admin')->group(function () {
+Route::prefix('cms/admin')->middleware('auth:admin,user')->group(function () {
     Route::view('/', 'cms.parent');
     // Route::view('/index', 'cms.parent');
     Route::resource('/cities', CityController::class);
     Route::resource('/categories', CategoryController::class);
     Route::resource('/admins', AdminController::class);
+    Route::resource('user', UserController::class);
 
     Route::get('/edit-password', [AuthController::class, 'editPassword'])->name('edit.password');
     Route::put('/update-password', [AuthController::class, 'updatePassword']);
