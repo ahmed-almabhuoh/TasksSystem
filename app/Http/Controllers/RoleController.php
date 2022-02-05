@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
 use Dotenv\Validator;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 use Symfony\Component\HttpFoundation\Response;
 
 class RoleController extends Controller
@@ -17,7 +17,7 @@ class RoleController extends Controller
     public function index()
     {
         //
-        $roles = Role::all();
+        $roles = Role::withCount('permissions')->get();
         return response()->view('cms.spatie.role.index', [
             'roles' => $roles,
         ]);

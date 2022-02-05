@@ -36,6 +36,7 @@
                       <th>ID</th>
                       <th>Name</th>
                       <th>Guard Name</th>
+                      <th>Permissions</th>
                       <th>Created At</th>
                       <th>Updated At</th>
                       <th>Settings</th>
@@ -47,6 +48,11 @@
                         <td>{{$role->id}}</td>
                         <td>{{$role->name}}</td>
                         <td>{{$role->guard_name}}</td>
+                        <td>
+                            <a href="{{route('role.permission.index', $role->id)}}" class="btn btn-info">
+                                <i class="">({{$role->permissions_count}}) Permissions</i>
+                              </a>
+                        </td>
                         <td>{{$role->created_at}}</td>
                         <td>{{$role->updated_at}}</td>
                         <td>

@@ -220,29 +220,35 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </li>
             </ul>
             <li class="nav-header">Content Management</li>
+
+            @can('Add-Task')
             <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-map-marked-alt"></i>
-                <p>
-                  Cities
-                  <i class="fas fa-angle-left right"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="{{route('cities.create')}}" class="nav-link">
-                    <i class="far fa-plus-square nav-icon"></i>
-                    <p>Create</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="{{route('cities.index')}}" class="nav-link">
-                    <i class="fas fa-list-ul nav-icon"></i>
-                    <p>Index</p>
-                  </a>
-                </li>
-              </ul>
-            </li>
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-map-marked-alt"></i>
+                  <p>
+                    Cities
+                    <i class="fas fa-angle-left right"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{route('cities.create')}}" class="nav-link">
+                      <i class="far fa-plus-square nav-icon"></i>
+                      <p>Create</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{route('cities.index')}}" class="nav-link">
+                      <i class="fas fa-list-ul nav-icon"></i>
+                      <p>Index</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            @endcan
+
+            @can('Category-Item')
+
             <li class="nav-item">
               <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-layer-group"></i>
@@ -251,13 +257,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <i class="fas fa-angle-left right"></i>
                 </p>
               </a>
+
               <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="{{route('categories.create')}}" class="nav-link">
-                    <i class="far fa-plus-square nav-icon"></i>
-                    <p>Create</p>
-                  </a>
-                </li>
+                @can('Create-Category')
+                    <li class="nav-item">
+                    <a href="{{route('categories.create')}}" class="nav-link">
+                        <i class="far fa-plus-square nav-icon"></i>
+                        <p>Create</p>
+                    </a>
+                    </li>
+                @endcan
+
                 <li class="nav-item">
                   <a href="{{route('categories.index')}}" class="nav-link">
                     <i class="fas fa-list-ul nav-icon"></i>
@@ -266,6 +276,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </li>
               </ul>
             </li>
+            @endcan
+
             <li class="nav-header">Roles & Permissions</li>
             <li class="nav-item">
                 <a href="#" class="nav-link">
