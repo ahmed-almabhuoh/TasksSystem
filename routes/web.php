@@ -7,6 +7,7 @@ use App\Http\Controllers\CityController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RolePermissionController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AgeCheck;
 use App\Mail\WelcomeEmail;
@@ -41,6 +42,7 @@ Route::prefix('cms/admin')->middleware('auth:admin,user')->group(function () {
     Route::resource('/categories', CategoryController::class);
     Route::resource('/admins', AdminController::class);
     Route::resource('user', UserController::class);
+    Route::resource('task', TaskController::class);
 
     Route::get('/edit-password', [AuthController::class, 'editPassword'])->name('edit.password');
     Route::put('/update-password', [AuthController::class, 'updatePassword']);

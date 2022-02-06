@@ -1,14 +1,14 @@
 @extends('cms.parent')
 
-@section('title', 'Create Category')
+@section('title', 'Create Task')
 
 @section('styles')
     {{-- Styles --}}
 @endsection
 
-@section('capital-starter-page', 'Create Category')
+@section('capital-starter-page', 'Create Task')
 @section('home-starter-page', 'Home')
-@section('small-starter-page', 'categories')
+@section('small-starter-page', 'Task')
 
 @section('content')
     {{-- Content Code --}}
@@ -21,7 +21,7 @@
                   <!-- general form elements -->
                   <div class="card card-primary">
                     <div class="card-header">
-                      <h3 class="card-title">Create Category</h3>
+                      <h3 class="card-title">Create Task</h3>
                     </div>
 
                     <!-- /.card-header -->
@@ -30,12 +30,24 @@
                         @csrf
                       <div class="card-body">
                         <div class="form-group">
+                            <label for="category">Category</label>
+                            <select name="category" id="category">
+                                @foreach ($categories as $category)
+                                    <option value="{{$category->id}}">{{$category->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
                           <label for="name">Name</label>
                           <input type="text" class="form-control" id="name" placeholder="Enter name">
                         </div>
                         <div class="form-group">
+                            <label for="desc">Description</label>
+                            <input type="text" class="form-control" id="desc" placeholder="Enter task description">
+                          </div>
+                        <div class="form-group">
                           <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="active">
+                            <input type="checkbox" class="custom-control-input" id="active" checked>
                             <label class="custom-control-label" for="active">Active</label>
                           </div>
                         </div>
@@ -59,9 +71,11 @@
     <script>
       function store () {
         // cms/admin/categories
-        axios.post('/cms/admin/categories', {
-          name: document.getElementById('name').value,
-          status: document.getElementById('active').checked,
+        axios.post('/cms/admin/task', {
+            title: document.getElementById('name').value,
+            desc: document.getElementById('desc').value,
+            status: document.getElementById('active').checked,
+            category_id: document.getElementById('category').value,
         })
           .then(function (response) {
             // handle success

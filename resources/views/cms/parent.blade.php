@@ -283,6 +283,30 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </li>
             @endcan
 
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-tasks"></i>
+                    <p>
+                        Tasks
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{route('task.create')}}" class="nav-link">
+                            <i class="far fa-plus-square nav-icon"></i>
+                            <p>Create</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="{{route('task.index')}}" class="nav-link">
+                        <i class="fas fa-list-ul nav-icon"></i>
+                        <p>Index</p>
+                    </a>
+                    </li>
+                </ul>
+              </li>
+
             @can('Role-Permission')
             <li class="nav-header">Roles & Permissions</li>
             <li class="nav-item">

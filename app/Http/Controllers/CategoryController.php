@@ -49,11 +49,17 @@ class CategoryController extends Controller
             'status'=>'required|boolean'
         ]);
 
+
         if (!$validator->fails()) {
 
             $category = new Category();
             $category->name = $request->get('name');
             $category->active = $request->get('status');
+            if (auth('admin')->check()) {
+                $category->user_id = auth('admin')->user()->id;
+            }else{
+                $category->user_id = auth('user')->user()->id;
+            }
             $isCreated = $category->save();
 
             return response()->json([
@@ -113,7 +119,7 @@ class CategoryController extends Controller
                 'message' => $isUpdated ? 'Category updated successfully' : 'Category updated failed',
             ], $isUpdated ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
 
-            
+
         }else{
             return response()->json([
                 'message' => $validator->getMessageBag()->first(),
