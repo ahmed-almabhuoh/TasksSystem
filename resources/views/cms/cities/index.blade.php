@@ -1,7 +1,7 @@
 @extends('cms.parent')
 
 @section('title', 'Home')
-    
+
 @section('capital-starter-page', 'All City')
 @section('home-starter-page', 'Home')
 @section('small-starter-page', 'cities')
@@ -49,9 +49,13 @@
                         <td>{{$city->updated_at}}</td>
                         <td>
                           <div class="btn-group">
-                            <a href="{{route('cities.edit', $city->id)}}" class="btn btn-info">
-                              <i class="fas fa-pen"></i>
-                            </a>
+
+                            @can('Update-City')
+                                <a href="{{route('cities.edit', $city->id)}}" class="btn btn-info">
+                                    <i class="fas fa-pen"></i>
+                                </a>
+                            @endcan
+
 
                             {{-- <form method="POST" action="{{route('cities.destroy', $city->id)}}">
                               @csrf
@@ -61,10 +65,11 @@
                               </button>
                             </form> --}}
 
-                            
-                            <a href="#" class="btn btn-danger" onclick="confirmDestroy({{$city->id}}, this)">
-                              <i class="fas fa-trash"></i>
-                            </a>
+                            @can('Delete-City')
+                                <a href="#" class="btn btn-danger" onclick="confirmDestroy({{$city->id}}, this)">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            @endcan
 
                             {{-- <button type="button" class="btn btn-danger">
                               <i class="fas fa-trash"></i>
@@ -111,7 +116,7 @@
       }
 
       function destory (id, refrence) {
-        // cms/admin/cities/{city} 
+        // cms/admin/cities/{city}
         axios.delete('/cms/admin/cities/' + id)
           .then(function (response) {
             // handle success

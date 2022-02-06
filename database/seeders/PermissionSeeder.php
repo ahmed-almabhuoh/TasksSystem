@@ -17,28 +17,41 @@ class PermissionSeeder extends Seeder
         //
 
         $permissions = [
+            'Admin-Item',
             'Show-Admin',
             'Update-Admin',
             'Add-Admin',
             'Delete-Admin',
+            'User-Item',
             'Show-User',
             'Update-User',
             'Delete-User',
             'Add-User',
+            'Category-Item',
             'Show-Category',
             'Update-Category',
             'Delete-Category',
             'Add-Category',
+            'City-Item',
             'Show-City',
             'Update-City',
             'Delete-City',
             'Add-City',
+            'Role-Permission'
+        ];
+
+        $guards = [
+            'admin',
+            'user'
         ];
 
         foreach ($permissions as $permission) {
-            Permission::create([
-                'name' => $permission
-            ]);
+            foreach ($guards as $guard) {
+                Permission::create([
+                    'name' => $permission,
+                    'guard_name' => $guard,
+                ]);
+            }
         }
     }
 }

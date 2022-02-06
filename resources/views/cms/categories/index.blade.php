@@ -1,7 +1,7 @@
 @extends('cms.parent')
 
 @section('title', 'Categories')
-    
+
 @section('capital-starter-page', 'Categories')
 @section('home-starter-page', 'Home')
 @section('small-starter-page', 'categories')
@@ -52,14 +52,17 @@
                         <td>{{$category->updated_at}}</td>
                         <td>
                           <div class="btn-group">
-                            <a href="{{route('categories.edit', $category->id)}}" class="btn btn-info">
-                              <i class="fas fa-pen"></i>
-                            </a>
+                            @can('Update-Category')
+                                <a href="{{route('categories.edit', $category->id)}}" class="btn btn-info">
+                                <i class="fas fa-pen"></i>
+                                </a>
+                            @endcan
 
-                            
-                            <a href="#" class="btn btn-danger" onclick="confirmDestroy({{$category->id}}, this)">
-                              <i class="fas fa-trash"></i>
-                            </a>
+                            @can('Delete-Category	')
+                                <a href="#" class="btn btn-danger" onclick="confirmDestroy({{$category->id}}, this)">
+                                <i class="fas fa-trash"></i>
+                                </a>
+                            @endcan
                           </div>
                         </td>
                       </tr>

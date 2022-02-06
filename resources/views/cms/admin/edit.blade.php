@@ -48,14 +48,14 @@
                         </div>
                       </div>
                       <!-- /.card-body -->
-      
+
                       <div class="card-footer">
                         <button type="button" class="btn btn-primary" onclick="update('{{$admin->id}}')">Submit</button>
                       </div>
                     </form>
                   </div>
                   <!-- /.card -->
-      
+
             </div><!-- /.container-fluid -->
           </section>
           <!-- /.content -->

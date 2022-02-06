@@ -1,7 +1,7 @@
 @extends('cms.parent')
 
 @section('title', 'Users')
-    
+
 @section('capital-starter-page', 'Users')
 @section('home-starter-page', 'Home')
 @section('small-starter-page', 'Users')
@@ -50,14 +50,19 @@
                         <td>{{$user->updated_at}}</td>
                         <td>
                           <div class="btn-group">
-                            <a href="{{route('user.edit', $user->id)}}" class="btn btn-info">
-                              <i class="fas fa-pen"></i>
-                            </a>
 
-                            
-                            <a href="#" class="btn btn-danger" onclick="confirmDestroy({{$user->id}}, this)">
-                              <i class="fas fa-trash"></i>
-                            </a>
+                            @can('Update-User')
+                                <a href="{{route('user.edit', $user->id)}}" class="btn btn-info">
+                                <i class="fas fa-pen"></i>
+                                </a>
+                            @endcan
+
+                            @can('Delete-User')
+                                <a href="#" class="btn btn-danger" onclick="confirmDestroy({{$user->id}}, this)">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            @endcan
+
                           </div>
                         </td>
                       </tr>

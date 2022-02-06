@@ -1,6 +1,6 @@
 @extends('cms.parent')
 
-@section('title', 'Create Admin')
+@section('title', 'Create Adminببب')
 
 @section('styles')
     {{-- Styles --}}
@@ -29,6 +29,18 @@
                     <form id="reset-form">
                         @csrf
                       <div class="card-body">
+
+                        <div class="form-group">
+                            <label for="name">role name</label>
+                            <select name="role" id="role">
+                                @forelse ($roles as $role)
+                                <option value="{{$role->id}}">{{$role->name}}</option>
+
+                                @empty
+
+                                @endforelse
+                            </select>
+                        </div>
                         <div class="form-group">
                           <label for="name">Name</label>
                           <input type="text" class="form-control" id="name" placeholder="Enter name">
@@ -45,14 +57,14 @@
                         </div>
                       </div>
                       <!-- /.card-body -->
-      
+
                       <div class="card-footer">
                         <button type="button" class="btn btn-primary" onclick="store()">Submit</button>
                       </div>
                     </form>
                   </div>
                   <!-- /.card -->
-      
+
             </div><!-- /.container-fluid -->
           </section>
           <!-- /.content -->
@@ -64,6 +76,7 @@
       function store () {
         // cms/admin/categories
         axios.post('/cms/admin/admins', {
+        role_id: document.getElementById('role').value,
           name: document.getElementById('name').value,
           email: document.getElementById('email').value,
           status: document.getElementById('active').checked,

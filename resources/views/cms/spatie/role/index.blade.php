@@ -37,6 +37,7 @@
                       <th>Name</th>
                       <th>Guard Name</th>
                       <th>Permissions</th>
+                      <th>Assign</th>
                       <th>Created At</th>
                       <th>Updated At</th>
                       <th>Settings</th>

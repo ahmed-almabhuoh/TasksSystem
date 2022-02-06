@@ -6,6 +6,7 @@ use App\Models\User;
 use Dotenv\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
@@ -32,7 +33,10 @@ class UserController extends Controller
     public function create()
     {
         //
-        return response()->view('cms.user.create');
+        $roles = Role::select(['id', 'name'])->get();
+        return response()->view('cms.user.create', [
+            'roles' => $roles
+        ]);
     }
 
     /**
@@ -50,6 +54,7 @@ class UserController extends Controller
         //
         if (!$validator->fails()) {
             $user = new User();
+            $role = Role::findById($request->input('role_id'), 'user');
 
             $user->name = $request->get('name');
             $user->email = $request->get('email');
@@ -57,9 +62,12 @@ class UserController extends Controller
 
             $isCreated = $user->save();
 
-            return response()->json([
-                'message' => $isCreated ? 'User created successfully' : 'Faild to create user',
-            ], $isCreated ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
+            if($isCreated) {
+                $user->assignRole($role);
+                return response()->json([
+                    'message' => $isCreated ? 'User created successfully' : 'Failed to create user'
+                ], $isCreated ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
+            }
         }else{
             return response()->json([
                 'message' => $validator->getMessageBag()->first()

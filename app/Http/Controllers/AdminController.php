@@ -8,6 +8,7 @@ use Dotenv\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Spatie\Permission\Models\Role;
 use Symfony\Component\HttpFoundation\Response;
 
 class AdminController extends Controller
@@ -31,8 +32,11 @@ class AdminController extends Controller
      */
     public function create()
     {
-        //
-        return response()->view('cms.admin.create');
+        $roles = Role::select('id', 'name')->get();
+        //return response()->json($role);
+        return response()->view('cms.admin.create',[
+            'roles' => $roles
+        ] );
     }
 
     /**
@@ -51,19 +55,27 @@ class AdminController extends Controller
         //
 
         if (!$validator->fails()) {
+            $role = Role::findById($request->input('role_id'), 'admin');
+
             $admin = new Admin();
             $admin->name = $request->get('name');
             $admin->email = $request->get('email');
             $admin->active = $request->get('status');
             $admin->password = Hash::make('password');
-            
-            $isCreated = $admin->save();
+
+            $isSave = $admin->save();
+            if($isSave) {
+                $admin->assignRole($role);
+                return response()->json([
+                    'message' => $isSave ? 'Admin created successfully' : 'Failed to create admin'
+                ], $isSave ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
+            }
 
             // Mail::to($admin->email)->send(new WelcomeEmail($admin));
 
-            return response()->json([
-                'message' => $isCreated ? 'Admin created successfully' : 'Failed to create admin'
-            ], $isCreated ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
+            // return response()->json([
+            //     'message' => $isCreated ? 'Admin created successfully' : 'Failed to create admin'
+            // ], $isCreated ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
         }else {
             return response()->json([
                 'message' => $validator->getMessageBag()->first()
@@ -111,20 +123,23 @@ class AdminController extends Controller
         //
 
         if (!$validator->fails()) {
+            $role = Role::findById($request->input('role_id'), 'admin');
             $admin->name = $request->get('name');
             $admin->email = $request->get('email');
             $admin->active = $request->get('status');
-            
-            $isUpdated = $admin->save();
 
-            return response()->json([
-                'message' => $isUpdated ? 'Admin updated successfully' : 'Failed to update admin'
-            ], $isUpdated ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
+            $isSave = $admin->save();
+
+            if ($isSave){
+                $admin->syncRoles($role);
+                return response()->json(['message'=> $isSave ? 'Save admin' : 'error'], $isSave ? Response::HTTP_CREATED : Response::HTTP_BAD_REQUEST);
+            }
+
         }else{
-            return response()->json([
-                'message' => $validator->getMessageBag()->first()
-            ], Response::HTTP_BAD_REQUEST);
-        }
+                return response()->json([
+                    'message' => $validator->getMessageBag()->first()
+                ], Response::HTTP_BAD_REQUEST);
+            }
     }
 
     /**
