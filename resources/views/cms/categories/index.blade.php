@@ -58,7 +58,7 @@
                                 </a>
                             @endcan
 
-                            @can('Delete-Category	')
+                            @can('Delete-Category')
                                 <a href="#" class="btn btn-danger" onclick="confirmDestroy({{$category->id}}, this)">
                                 <i class="fas fa-trash"></i>
                                 </a>

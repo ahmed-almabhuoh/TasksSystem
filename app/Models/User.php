@@ -44,4 +44,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'role_name' => 'array',
     ];
+
+    public function tasks () {
+        return $this->hasMany(Task::class, 'user_id', 'id');
+    }
 }

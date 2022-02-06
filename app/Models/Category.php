@@ -9,11 +9,15 @@ class Category extends Model
 {
     use HasFactory;
 
-    // public function get______Attribute 
+    // public function get______Attribute
 
     protected $appends = ['status'];
 
     public function getStatusAttribute () {
         return $this->active ? "Active" : "Disabled";
+    }
+
+    public function tasks () {
+        return $this->hasMany(Task::class, 'category_id', 'id');
     }
 }
