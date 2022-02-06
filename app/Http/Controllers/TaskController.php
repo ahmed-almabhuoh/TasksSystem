@@ -19,12 +19,19 @@ class TaskController extends Controller
     public function index()
     {
         //
-        $tasks = Task::orderBy('title')
-        ->where('status', 1)
-        ->get();
-        return response()->view('cms.task.index', [
-            'tasks' => $tasks
-        ]);
+        if (auth('admin')->check()) {
+            $tasks = Task::all();
+            return response()->view('cms.task.index', [
+                'tasks' => $tasks
+            ]);
+        }else {
+            $tasks = Task::where('user_id', auth('user')->user()->id)
+            ->where('position', 'user')
+            ->get();
+            return response()->view('cms.task.index', [
+                'tasks' => $tasks
+            ]);
+        }
     }
 
     /**
@@ -75,6 +82,12 @@ class TaskController extends Controller
                 $task->user_id = auth('user')->user()->id;
             }
 
+            if (auth('admin')->check()) {
+                $task->position = 'admin';
+            }else {
+                $task->position = 'user';
+            }
+
             $isCreated = $task->save();
             return response()->json([
                 'message' => $isCreated ? 'Task created successfully' : 'Faild to create task',
@@ -107,16 +120,26 @@ class TaskController extends Controller
     {
         //
         if (auth('admin')->check()) {
-            $categories = Category::where('user_id', auth('admin')->user()->id)->get();
+            $categories = Category::all();
+            $category = $task->category;
+            return response()->view('cms.task.edit', [
+                'its_category' => $category,
+                'task' => $task,
+                'categories' => $categories
+            ]);
         }else{
-            $categories = Category::where('user_id', auth('user')->user()->id)->get();
+            if ($task->user_id == auth('user')->user()->id) {
+                $categories = Category::where('user_id', auth('user')->user()->id)->get();
+                $category = $task->category;
+                return response()->view('cms.task.edit', [
+                    'its_category' => $category,
+                    'task' => $task,
+                    'categories' => $categories
+                ]);
+            }else {
+                return redirect()->route('task.index');
+            }
         }
-        $category = $task->category;
-        return response()->view('cms.task.edit', [
-            'its_category' => $category,
-            'task' => $task,
-            'categories' => $categories
-        ]);
     }
 
     /**

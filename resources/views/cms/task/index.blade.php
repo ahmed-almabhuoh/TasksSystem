@@ -60,13 +60,13 @@
                         <td>{{$task->updated_at}}</td>
                         <td>
                           <div class="btn-group">
-                            @can('Update-Category')
+                            @can('Update-Task')
                                 <a href="{{route('task.edit', $task->id)}}" class="btn btn-info">
                                 <i class="fas fa-pen"></i>
                                 </a>
                             @endcan
 
-                            @can('Delete-Category')
+                            @can('Delete-Task')
                                 <a href="#" class="btn btn-danger" onclick="confirmDestroy({{$task->id}}, this)">
                                 <i class="fas fa-trash"></i>
                                 </a>

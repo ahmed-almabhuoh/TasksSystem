@@ -37,7 +37,12 @@ class PermissionSeeder extends Seeder
             'Update-City',
             'Delete-City',
             'Add-City',
-            'Role-Permission'
+            'Role-Permission',
+            'Task-Item',
+            'Add-Task',
+            'Update-Task',
+            'Delete-Task',
+            'Show-Task',
         ];
 
         $guards = [
@@ -53,5 +58,7 @@ class PermissionSeeder extends Seeder
                 ]);
             }
         }
+
+
     }
 }

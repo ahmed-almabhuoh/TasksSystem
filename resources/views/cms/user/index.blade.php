@@ -106,7 +106,7 @@
 
       function destoy (id, refrance) {
         // cms/user/users/{user}
-        axios.delete('/cms/user/users/' + id)
+        axios.delete('/cms/admin/user/' + id)
           .then(function (response) {
             // handle success
             console.log(response);
