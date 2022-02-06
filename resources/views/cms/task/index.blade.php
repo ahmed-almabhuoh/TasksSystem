@@ -33,7 +33,7 @@
                 <table class="table table-hover table-bordered table-striped text-nowrap">
                   <thead>
                     <tr>
-                      <th>ID</th>
+                      <th>NO.</th>
                       <th>Title</th>
                       <th>Description</th>
                       <th>Status</th>
@@ -43,9 +43,15 @@
                     </tr>
                   </thead>
                   <tbody>
+                    @php
+                    $no = 0;
+                    @endphp
                     @foreach ($tasks as $task)
                       <tr>
-                        <td>{{$task->id}}</td>
+                          @php
+                              ++$no;
+                          @endphp
+                        <td>{{$no}}</td>
                         <td>{{$task->title}}</td>
                         <td>{{$task->desc}}</td>
                         {{-- <td>@if({{$task->active}}) {{"Active"}} @else {{"Disabled"}} @endif</td> --}}

@@ -20,8 +20,18 @@ class CategoryController extends Controller
     {
         //
         // echo 'WE ARE IN THE :: INDEX';
-        $data = Category::all();
-        return response()->view('cms.categories.index', ['categories'=>$data]);
+        if (auth('admin')->check()) {
+            $categories = Category::all();
+            return response()->view('cms.categories.index', ['categories'=>$categories]);
+        }else {
+            $categories = Category::where('user_id', auth('user')->user()->id)
+            ->where('position', 'user')
+            ->get();
+            return response()->view('cms.categories.index', ['categories'=>$categories]);
+        }
+
+        // $data = Category::all();
+        // return response()->view('cms.categories.index', ['categories'=>$data]);
     }
 
     /**
@@ -45,7 +55,7 @@ class CategoryController extends Controller
     {
         //
         $validator = Validator($request->all(), [
-            'name'=>'required|string|min:3|max:30|unique:categories',
+            'name'=>'required|string|min:3|max:30',
             'status'=>'required|boolean'
         ]);
 
@@ -57,9 +67,12 @@ class CategoryController extends Controller
             $category->active = $request->get('status');
             if (auth('admin')->check()) {
                 $category->user_id = auth('admin')->user()->id;
+                $category->position = 'admin';
             }else{
                 $category->user_id = auth('user')->user()->id;
+                $category->position = 'user';
             }
+
             $isCreated = $category->save();
 
             return response()->json([
@@ -92,7 +105,15 @@ class CategoryController extends Controller
     public function edit(Category $category)
     {
         //
-        return response()->view('cms.categories.edit', ['category'=>$category]);
+        if (auth('admin')->check()) {
+            return response()->view('cms.categories.edit', ['category'=>$category]);
+        }else {
+            if ($category->user_id == auth('user')->user()->id && $category->position == 'user') {
+                return response()->view('cms.categories.edit', ['category'=>$category]);
+            }else {
+                return redirect()->route('categories.index');
+            }
+        }
     }
 
     /**

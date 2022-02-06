@@ -78,13 +78,9 @@ class TaskController extends Controller
             $task->category_id = $request->get('category_id');
             if (auth('admin')->check()) {
                 $task->user_id = auth('admin')->user()->id;
-            }else {
-                $task->user_id = auth('user')->user()->id;
-            }
-
-            if (auth('admin')->check()) {
                 $task->position = 'admin';
             }else {
+                $task->user_id = auth('user')->user()->id;
                 $task->position = 'user';
             }
 

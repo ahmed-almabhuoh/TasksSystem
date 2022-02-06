@@ -33,7 +33,7 @@
                 <table class="table table-hover table-bordered table-striped text-nowrap">
                   <thead>
                     <tr>
-                      <th>ID</th>
+                      <th>NO.</th>
                       <th>Name</th>
                       <th>Active</th>
                       <th>Created At</th>
@@ -42,9 +42,15 @@
                     </tr>
                   </thead>
                   <tbody>
+                      @php
+                          $no = 0;
+                      @endphp
                     @foreach ($categories as $category)
                       <tr>
-                        <td>{{$category->id}}</td>
+                          @php
+                              ++$no;
+                          @endphp
+                        <td>{{$no}}</td>
                         <td>{{$category->name}}</td>
                         {{-- <td>@if({{$category->active}}) {{"Active"}} @else {{"Disabled"}} @endif</td> --}}
                         <td><span class="badge @if($category->active) bg-success @else bg-danger @endif">{{$category->status  }}</span></td>
