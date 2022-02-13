@@ -54,9 +54,13 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         //
+        // Mthods we can use with image request
+        // guessExtension()
+        //
         $validator = Validator($request->all(), [
             'name'=>'required|string|min:3|max:30',
-            'status'=>'required|boolean'
+            'status'=>'required|boolean',
+            'image' => 'required|image|mimes:jpg,png,jpeg|max:5048',
         ]);
 
 
@@ -65,6 +69,13 @@ class CategoryController extends Controller
             $category = new Category();
             $category->name = $request->get('name');
             $category->active = $request->get('status');
+
+            // UPLOAD CATEGORY IMAGE
+            $image = $request->file('image');
+            $image_name = time() . '_category_' . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images\categories'), $image_name);
+            $category->image = $image_name;
+
             if (auth('admin')->check()) {
                 $category->user_id = auth('admin')->user()->id;
                 $category->position = 'admin';
